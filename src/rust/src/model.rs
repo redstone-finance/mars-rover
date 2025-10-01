@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
 use soroban_env_common::xdr::{TransactionEvent, TransactionResult};
 use soroban_env_host::xdr::{
     ContractEvent, DiagnosticEvent, LedgerEntry, LedgerEntryChangeType, LedgerKey,
@@ -12,7 +11,6 @@ pub enum SimulateTransactionResponse {
     Error(SimulateTransactionErrorResponse),
 }
 
-#[serde_as]
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimulateTransactionSuccessResponse {
