@@ -24,8 +24,10 @@ Core functionality:
 
 ## Installation
 
+The package is not published anywhere to use it you will need to add it from github.
+
 ```bash
-npm install mars-rover
+yarn add -D "@redstone-finance/mars-rover@git+https://github.com/redstone-finance/mars-rover.git#v0.0.0"
 ```
 
 ## Usage
