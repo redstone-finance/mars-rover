@@ -1,4 +1,4 @@
-NIGHTLY=nightly-2025-04-29
+NIGHTLY=nightly-2026-01-20
 
 .PHONY: fmt check test build clippy build all-checks fmt-and-checks
 
@@ -41,4 +41,3 @@ build-release:
 all-checks: check clippy test build unused-deps lint-tomls
 
 fix-all: fmt fix-unused-deps all-checks
-
