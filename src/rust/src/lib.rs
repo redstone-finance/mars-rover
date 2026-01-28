@@ -126,6 +126,21 @@ impl MarsRover {
     }
 
     #[napi]
+    pub fn get_ledger_entries(&self, keys: Vec<String>) -> Result<Vec<String>> {
+        let entries = self
+            .sandbox
+            .get_ledger_entries(keys)
+            .map_err(|e| Error::from_reason(e.to_string()))?;
+
+        entries
+            .into_iter()
+            .map(|entry| {
+                serde_json::to_string(&entry).map_err(|e| Error::from_reason(e.to_string()))
+            })
+            .collect()
+    }
+
+    #[napi]
     pub fn get_transaction(&self, hash: String) -> Result<String> {
         let response = self
             .sandbox

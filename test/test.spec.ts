@@ -254,6 +254,61 @@ describe('MarsRover Stellar Sandbox', () => {
         );
       }).rejects.toThrow();
     });
+
+    it('should retrieve ledger entries for deployed contract', async () => {
+      const ownerKeypair = createFundedAccount();
+
+      const uploadTx = await buildTransaction(
+        Operation.uploadContractWasm({ wasm: contractWasm }),
+        ownerKeypair,
+      );
+
+      const wasmHashScVal = await executeTransaction(uploadTx, ownerKeypair);
+      const wasmHash = wasmHashScVal.bytes();
+
+      const createContractTx = await buildTransaction(
+        Operation.createCustomContract({
+          wasmHash,
+          address: Address.fromString(ownerKeypair.publicKey()),
+        }),
+        ownerKeypair,
+      );
+
+      const contractAddressScVal = await executeTransaction(createContractTx, ownerKeypair);
+      const contractAddress = Address.fromScVal(contractAddressScVal);
+
+      const instanceKey = xdr.LedgerKey.contractData(
+        new xdr.LedgerKeyContractData({
+          contract: contractAddress.toScAddress(),
+          key: xdr.ScVal.scvLedgerKeyContractInstance(),
+          durability: xdr.ContractDataDurability.persistent(),
+        }),
+      );
+
+      const ledgerEntries = await server.getLedgerEntries(instanceKey);
+
+      expect(ledgerEntries.entries).toHaveLength(1);
+      expect(ledgerEntries.latestLedger).toBeGreaterThan(0);
+
+      const [entry] = ledgerEntries.entries;
+      expect(entry.key.toXDR('base64')).toBe(instanceKey.toXDR('base64'));
+    });
+
+    it('should return empty entries for non-existent keys', async () => {
+      const fakeContractAddress = Address.contract(Buffer.alloc(32, 1));
+      const fakeKey = xdr.LedgerKey.contractData(
+        new xdr.LedgerKeyContractData({
+          contract: fakeContractAddress.toScAddress(),
+          key: xdr.ScVal.scvSymbol('NONEXISTENT'),
+          durability: xdr.ContractDataDurability.persistent(),
+        }),
+      );
+
+      const ledgerEntries = await server.getLedgerEntries(fakeKey);
+
+      expect(ledgerEntries.entries).toHaveLength(0);
+      expect(ledgerEntries.latestLedger).toBeGreaterThan(0);
+    });
   });
 
   describe('Error Handling', () => {
