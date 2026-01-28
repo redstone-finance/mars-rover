@@ -93,13 +93,6 @@ impl From<soroban_env_host::LedgerInfo> for LedgerInfo {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum Durability {
-    Temporary,
-    Persistent,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum SendTransactionStatus {
     Pending,
@@ -126,13 +119,6 @@ pub struct SendTransactionResponse {
     pub error_result: Option<TransactionResult>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub diagnostic_events: Option<Vec<DiagnosticEvent>>,
-}
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum GetTransactionStatus {
-    Success,
-    NotFound,
-    Failed,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

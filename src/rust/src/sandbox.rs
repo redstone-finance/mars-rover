@@ -244,6 +244,27 @@ impl Sandbox {
         Ok(result)
     }
 
+    pub fn get_ledger_entries(&self, keys: Vec<String>) -> Result<Vec<Option<LedgerEntryResult>>> {
+        let entries = keys
+            .into_iter()
+            .map(|key| LedgerKey::from_xdr_base64(key, Limits::none()).context("Invalid key XDR"))
+            .collect::<Result<Vec<_>>>()?
+            .into_iter()
+            .map(|key| {
+                let (entry, ttl) = self.memory.get(&Rc::new(key.clone())).ok()??;
+
+                Some(LedgerEntryResult {
+                    last_modified_ledger_seq: Some(entry.last_modified_ledger_seq),
+                    key: key.to_xdr_base64(Limits::none()).ok()?,
+                    val: entry.data.to_xdr_base64(Limits::none()).ok()?,
+                    live_until_ledger_seq: ttl,
+                })
+            })
+            .collect();
+
+        Ok(entries)
+    }
+
     pub fn get_contract_data(
         &self,
         contract_address: String,

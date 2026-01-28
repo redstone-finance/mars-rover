@@ -10,6 +10,7 @@ import {
   Keypair,
 } from '@stellar/stellar-sdk';
 import { SorobanDataBuilder } from '@stellar/stellar-base';
+import { getLedgerInfo } from './index';
 
 export class SandboxServer extends rpc.Server {
   constructor(private readonly sandbox: MarsRover) {
@@ -100,5 +101,24 @@ export class SandboxServer extends rpc.Server {
     }
 
     return Promise.resolve(response);
+  }
+
+  override getLedgerEntries(...keys: xdr.LedgerKey[]): Promise<rpc.Api.GetLedgerEntriesResponse> {
+    const keysBase64 = keys.map((key) => key.toXDR('base64'));
+    const entriesJson = this.sandbox.getLedgerEntries(keysBase64);
+
+    const entries = entriesJson
+      .map((json) => JSON.parse(json))
+      .filter((entry): entry is NonNullable<typeof entry> => entry !== null)
+      .map((entry) => ({
+        ...entry,
+        key: xdr.LedgerKey.fromXDR(entry.key, 'base64'),
+        val: xdr.LedgerEntryData.fromXDR(entry.val, 'base64'),
+      }));
+
+    return Promise.resolve({
+      entries,
+      latestLedger: getLedgerInfo(this.sandbox).sequence_number,
+    });
   }
 }

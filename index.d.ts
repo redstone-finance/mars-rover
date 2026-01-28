@@ -13,5 +13,6 @@ export declare class MarsRover {
   networkPassphrase(): string;
   getNetworkInfo(): string;
   getContractData(contractAddress: string, key: string, durability: string): string;
+  getLedgerEntries(keys: Array<string>): Array<string>;
   getTransaction(hash: string): string;
 }
