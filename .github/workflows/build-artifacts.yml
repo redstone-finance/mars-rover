@@ -51,14 +51,15 @@ jobs:
           - host: windows-latest
             target: aarch64-pc-windows-msvc
             build: yarn build --target aarch64-pc-windows-msvc
-    name: stable - ${{ matrix.settings.target }} - node@22
+    name: stable - ${{ matrix.settings.target }} - node@24
     runs-on: ${{ matrix.settings.host }}
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Setup node
         uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 24
           cache: yarn
       - name: Remove toolchain for artifact building
         run: rm rust-toolchain.toml
@@ -99,7 +100,7 @@ jobs:
         run: ${{ matrix.settings.build }}
         shell: bash
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: bindings-${{ matrix.settings.target }}
           path: |
@@ -110,7 +111,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Build FreeBSD
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Build
         id: build
         uses: cross-platform-actions/action@v0.29.0
@@ -147,7 +149,7 @@ jobs:
             rm -rf target
             rm -rf .yarn/cache
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: bindings-freebsd
           path: ${{ env.APP_NAME }}.*.node
@@ -177,7 +179,8 @@ jobs:
           - '22'
     runs-on: ${{ matrix.settings.host }}
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Setup node
         uses: actions/setup-node@v5
         with:
@@ -211,7 +214,8 @@ jobs:
           - '22'
     runs-on: ${{ contains(matrix.target, 'aarch64') && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Setup node
         uses: actions/setup-node@v5
         with:
@@ -271,11 +275,12 @@ jobs:
       - test-macOS-windows-binding
       - test-linux-binding
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Setup node
         uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 24
           cache: yarn
       - name: Install dependencies
         run: yarn install
@@ -291,7 +296,7 @@ jobs:
         run: ls -R ./npm
         shell: bash
       - name: Upload final artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: npm-packages
           path: npm/
