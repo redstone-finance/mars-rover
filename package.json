@@ -91,7 +91,7 @@
     "tinybench": "^4.0.1",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3",
+    "typescript": "^6",
     "zod": "^4.0.17"
   },
   "lint-staged": {
