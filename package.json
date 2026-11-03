@@ -68,14 +68,14 @@
     "postinstall": "npm run build:ts"
   },
   "peerDependencies": {
-    "@stellar/stellar-sdk": "14.1.0"
+    "@stellar/stellar-sdk": "16.4.1"
   },
   "devDependencies": {
     "@emnapi/core": "^1.4.5",
     "@emnapi/runtime": "^1.4.5",
     "@napi-rs/cli": "^3.0.3",
     "@oxc-node/core": "^0.0.32",
-    "@stellar/stellar-sdk": "14.1.0",
+    "@stellar/stellar-sdk": "16.4.1",
     "@taplo/cli": "^0.7.0",
     "@tybys/wasm-util": "^0.10.0",
     "@types/jest": "^30.0.0",
