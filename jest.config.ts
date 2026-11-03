@@ -6,6 +6,11 @@ const config: Config.InitialOptions = {
   coverageDirectory: '<rootDir>/coverage',
   coverageReporters: ['html'],
   preset: 'ts-jest',
+  transform: {
+    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.js$': ['ts-jest', { tsconfig: { allowJs: true } }],
+  },
+  transformIgnorePatterns: ['node_modules/(?!(@noble|uint8array-extras)/)'],
   setupFiles: ['./jest.setup.ts'],
   testPathIgnorePatterns: ['<rootDir>/dist/'],
   roots: ['<rootDir>/src/', '<rootDir>/test/'],

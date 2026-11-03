@@ -8,13 +8,13 @@ import {
   xdr,
   rpc,
   Keypair,
+  SorobanDataBuilder,
 } from '@stellar/stellar-sdk';
-import { SorobanDataBuilder } from '@stellar/stellar-base';
 import { getLedgerInfo } from './index';
 
 export class SandboxServer extends rpc.Server {
   constructor(private readonly sandbox: MarsRover) {
-    super('NA', { allowHttp: true });
+    super('http://localhost', { allowHttp: true });
   }
 
   override getAccount(address: string): Promise<Account> {
