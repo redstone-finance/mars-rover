@@ -2136,7 +2136,7 @@ __metadata:
     typescript: "npm:^6"
     zod: "npm:^4.0.17"
   peerDependencies:
-    "@stellar/stellar-sdk": 16.4.1
+    "@stellar/stellar-sdk": ^16.4.1
   languageName: unknown
   linkType: soft
 

@@ -68,7 +68,7 @@
     "postinstall": "npm run build:ts"
   },
   "peerDependencies": {
-    "@stellar/stellar-sdk": "16.4.1"
+    "@stellar/stellar-sdk": "^16.4.1"
   },
   "devDependencies": {
     "@emnapi/core": "^1.4.5",
